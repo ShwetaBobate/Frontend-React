@@ -1,7 +1,7 @@
 import { configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "./axiosConfig";
 // import { fetchAllProducts } from "../backend/ProductService";
-const BASE_URL = "http://localhost:3000/api/v1/orders";
+const BASE_URL = "https://frontend-react-one-pi.vercel.app/api/v1/orders";
 
 
 export const Coupons = {
