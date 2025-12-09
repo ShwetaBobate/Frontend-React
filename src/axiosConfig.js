@@ -1,7 +1,11 @@
 import axios from "axios";
 
+const API = axios.create({
+  baseURL: "https://backend-express-tawny.vercel.app/",  // ⭐ Your backend URL
+});
+
 // Add token automatically to all requests
-axios.interceptors.request.use((config) => {
+API.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
 
   if (token) {
@@ -11,4 +15,4 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
-export default axios;
+export default API;

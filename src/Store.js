@@ -1,7 +1,7 @@
 import { configureStore, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "./axiosConfig";
+import API from "./axiosConfig";
 // import { fetchAllProducts } from "../backend/ProductService";
-const BASE_URL = "https://frontend-react-one-pi.vercel.app/api/v1/orders";
+// const BASE_URL = "http://localhost:3000/API/v1/orders";
 
 
 export const Coupons = {
@@ -76,16 +76,16 @@ const couponSlice = createSlice({
 // export const fetchVegItems = createAsyncThunk(
 //   "veg/fetchVegProduct",
 //   async () => {
-//     const response = await axios.get("/api/v1/veg/getVegItems");
+//     const response = await API.get("/API/v1/veg/getVegItems");
 //     return response.data;
 //   }
 // );
 export const fetchVegItems = createAsyncThunk(
   "veg/fetchVegProduct",
   async () => {
-const token = localStorage.getItem("authToken");
+const token = localStorage.getItem("token");
 
-    const response = await axios.get("/api/v1/veg/getVegItems", {
+    const response = await API.get("/api/v1/veg/getVegItems", {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -124,7 +124,7 @@ export const fetchNonVegItems = createAsyncThunk(
   "nonVeg/fetchNonVegItems",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/api/v1/nonVeg/getNonVegItems");
+      const response = await API.get("/api/v1/nonVeg/getNonVegItems");
       console.log("NON-VEG API RESPONSE:", response.data);
 
       return response.data; // assuming backend returns array of items
@@ -173,8 +173,20 @@ export const placeOrder = createAsyncThunk(
   "orders/placeOrder",
   async (orderData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(BASE_URL, orderData);
+      const token = localStorage.getItem("token");
+
+      const response = await API.post(
+        "/API/v1/orders",
+        orderData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
       return response.data; // backend returns { message, result }
+      
     } catch (error) {
       return rejectWithValue(error.response.data || "Order failed");
     }
@@ -189,7 +201,16 @@ export const getAllOrders = createAsyncThunk(
   "orders/getAllOrders",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(BASE_URL); // GET all orders
+      const token = localStorage.getItem("token");
+ const response = await API.get(
+        "/api/v1/orders",
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );; // GET all orders
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Failed to fetch orders");
@@ -266,7 +287,7 @@ export const registerUser = createAsyncThunk(
   "users/registerUser",
   async (formData, { rejectWithValue }) => {
     try {
-      const res = await axios.post("/api/v1/registerUser", formData);
+      const res = await API.post("/api/v1/registerUser", formData);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Registration failed");
@@ -281,7 +302,7 @@ export const loginUser = createAsyncThunk(
   "users/loginUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/v1/login", userData);
+      const response = await API.post("/api/v1/login", userData);
      
       return response.data;
     } catch (error) {
