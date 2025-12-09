@@ -176,7 +176,7 @@ export const placeOrder = createAsyncThunk(
       const token = localStorage.getItem("token");
 
       const response = await API.post(
-        "/API/v1/orders",
+        "/api/v1/orders",
         orderData,
         {
           headers: {
