@@ -73,6 +73,26 @@ const couponSlice = createSlice({
   }
 });
 
+
+// ---------------- WISHLIST SLICE ----------------
+const wishlistSlice = createSlice({
+  name: "wishlist",
+  initialState: [],
+  reducers: {
+    addToWishlist: (state, action) => {
+      const exists = state.find(item => item.id === action.payload.id);
+      if (!exists) {
+        state.push(action.payload);
+      }
+    },
+
+    removeFromWishlist: (state, action) => {
+      return state.filter(item => item.id !== action.payload);
+    }
+  }
+});
+
+
 // export const fetchVegItems = createAsyncThunk(
 //   "veg/fetchVegProduct",
 //   async () => {
@@ -83,14 +103,7 @@ const couponSlice = createSlice({
 export const fetchVegItems = createAsyncThunk(
   "veg/fetchVegProduct",
   async () => {
-const token = localStorage.getItem("token");
-
-    const response = await API.get("/api/v1/veg/getVegItems", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
+    const response = await API.get("/api/v1/veg/getVegItems");
     return response.data;
   }
 );
@@ -387,6 +400,8 @@ export const { addToCart, removeFromCart, incrementQty, decrementQty } =
 
 export const { applyCoupon } = couponSlice.actions;
 export const {saveCheckoutData}=checkoutSlice.actions;
+export const { addToWishlist, removeFromWishlist } = wishlistSlice.actions;
+
 
 // ---------------- STORE ----------------
 const store = configureStore({
@@ -397,8 +412,8 @@ const store = configureStore({
     orders:orderSlice.reducer,
     nonVeg:nonVegSlice.reducer,
     users:userSlice.reducer,
-    checkout:checkoutSlice.reducer
-
+    checkout:checkoutSlice.reducer,
+   wishlist:wishlistSlice.reducer
   }
 });
 

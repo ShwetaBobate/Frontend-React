@@ -39,7 +39,7 @@ function CouponApply() {
 
   return (
     <>
-      <input
+      {/* <input
         type="text"
         placeholder="Enter Coupon Code"
         value={input}
@@ -52,7 +52,17 @@ function CouponApply() {
         className="bg-blue-500 text-white px-4 py-2 rounded ml-2"
       >
         Apply Coupon
-      </button>
+      </button> */}
+      <input
+            type="text"
+            placeholder="Apply Coupon"
+            value={input}
+        onChange={(e) => setInput(e.target.value)}
+            className="flex-1 outline-none text-gray-700"
+          />
+          <button  onClick={handleApply} className="px-4 py-2 bg-linear-to-r from-pink-500 to-purple-400 text-white  transition">
+            Apply
+          </button>
     </>
   );
 }

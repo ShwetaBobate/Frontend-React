@@ -4,12 +4,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { placeOrder } from "./Store";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { QRCodeCanvas } from "qrcode.react";
+
 
  function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("cod");
    const { total, discountAmount, gst, shipping, finalAmount } = useSelector(
     (state) => state.checkout
-  );
+    );
+
+    const [showQR, setShowQR] = useState(false);
+    const upiID = "shwetabobate24@okhdfcbank";
+  const payerName = "Shweta Bobate";
+  const upiLink = `upi://pay?pa=${upiID}&pn=${payerName}&am=${finalAmount}&cu=INR`;
+
+  
   const cartItems = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const navigate=useNavigate();
@@ -151,9 +160,18 @@ import { useNavigate } from "react-router-dom";
             </div>
 
             <motion.div whileTap={{ scale: 0.95 }}>
-              <button onClick={handlePlaceOrder}  className="w-full bg-black text-white text-lg py-4 rounded-2xl shadow-md hover:bg-gray-800 transition">
+              <button  onClick={() => setShowQR(true)}  className="w-full bg-black text-white text-lg py-4 rounded-2xl shadow-md hover:bg-gray-800 transition">
                 Place Order
               </button>
+
+               {showQR && (
+                   <div className="flex justify-center mt-4">
+                  <div className="p-3 border rounded-xl bg-white shadow-sm w-fit text-center">
+                      <p className="text-sm font-medium text-gray-700 mb-2">Scan to Pay</p>
+                       <QRCodeCanvas value={upiLink} size={140} />
+                     </div>
+                   </div>
+                 )}
             </motion.div>
           </div>
         </div>

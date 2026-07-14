@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Footer from "./Footer";
 
 
 function Home() {
@@ -21,8 +22,8 @@ function Home() {
 
   const navigate = useNavigate();
 
-  const orderNow=()=>{
-navigate("/veg")
+  const orderNow = () => {
+    navigate("/veg")
   }
 
   const categories = [
@@ -53,11 +54,6 @@ navigate("/veg")
     </div>
   ));
 
-
-
-
-
-
   return (
     <>
 
@@ -84,7 +80,7 @@ navigate("/veg")
                 Fresh • Fast • Flavorful
               </p>
 
-              <button onClick={()=>orderNow()}className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded-xl shadow-md hover:bg-gray-200 transition">
+              <button onClick={() => orderNow()} className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded-xl shadow-md hover:bg-gray-200 transition">
                 Order Now
               </button>
             </div>
@@ -115,26 +111,23 @@ navigate("/veg")
       </section>
 
 
-      <div className="">
-        {/* Footer */}
+     {/* <div className="">
         <footer className="bg-black text-white py-10 mt-0">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
 
-            {/* Brand */}
             <div>
               <h2 className="text-2xl font-bold mb-3">FoodVerse</h2>
               <p className="text-gray-300">
                 Your favorite meals delivered hot & fresh. Fast service, great taste!
               </p>
               <div className="flex gap-4 mt-4">
-  <i className="fa-brands fa-facebook text-white text-2xl hover:text-gray-400 cursor-pointer"></i>
-  <i className="fa-brands fa-instagram text-white text-2xl hover:text-gray-400 cursor-pointer"></i>
-  <i className="fa-brands fa-twitter text-white text-2xl hover:text-gray-400 cursor-pointer"></i>
-</div>
+                <i className="fa-brands fa-facebook text-white text-2xl hover:text-gray-400 cursor-pointer"></i>
+                <i className="fa-brands fa-instagram text-white text-2xl hover:text-gray-400 cursor-pointer"></i>
+                <i className="fa-brands fa-twitter text-white text-2xl hover:text-gray-400 cursor-pointer"></i>
+              </div>
 
             </div>
 
-            {/* Quick Links */}
             <div>
               <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-gray-300">
@@ -145,7 +138,6 @@ navigate("/veg")
               </ul>
             </div>
 
-            {/* Support */}
             <div>
               <h3 className="text-xl font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-gray-300">
@@ -156,7 +148,6 @@ navigate("/veg")
               </ul>
             </div>
 
-            {/* Contact */}
             <div>
               <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
               <p className="text-gray-300">📍 Nagpur, India</p>
@@ -166,12 +157,15 @@ navigate("/veg")
 
           </div>
 
-          {/* Bottom */}
           <div className="border-t border-gray-700 mt-8 pt-5 text-center text-gray-400 text-sm">
             © {new Date().getFullYear()} FoodVerse — All Rights Reserved.
           </div>
-        </footer>
+        </footer> */}
 
+      {/* </div> */}
+
+      <div className="">
+        <Footer/>
       </div>
 
 

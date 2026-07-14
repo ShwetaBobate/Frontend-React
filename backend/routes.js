@@ -16,11 +16,20 @@ const authMiddleware = require("./Authintication");
 router.post("/registerUser", controller.registerUser);
 router.post("/login", controller.loginUser);
 
+router.get("/products/getAll", controller.getAllProducts);
+router.get("/products/getById/:id", controller.getProductById);
+
+router.get("/veg/getVegItems", controller.getAllVegItems);
+router.get("/veg/getVegById/:id", controller.getVegById);
+
+router.get("/nonVeg/getNonVegItems", controller.getAllNonVegItems);
+router.get("/nonVeg/getNonVegById/:id", controller.getNonVegById);
+
+
+
 router.use(authMiddleware);
 
 
-router.get("/products/getAll", controller.getAllProducts);
-router.get("/products/getById/:id", controller.getProductById);
 router.post("/products/saveall", controller.createProduct);
 router.put("/products/put/:id", controller.updateProduct);
 router.patch("/products/patch/:id", controller.updateProductPartial);
@@ -29,8 +38,6 @@ router.delete("/products/delete/:id", controller.deleteProduct);
 // ============================
 // VEG ROUTES
 // ============================
-router.get("/veg/getVegItems", controller.getAllVegItems);
-router.get("/veg/getVegById/:id", controller.getVegById);
 router.post("/veg/saveVeg", controller.createVeg);
 router.put("/veg/put/:id", controller.updateVegItem);
 router.patch("/veg/patch/:id", controller.updateVegItemPartial);
@@ -39,8 +46,6 @@ router.delete("/veg/delete/:id", controller.deleteVegItem);
 // ============================
 // NONVEG ROUTES
 // ============================
-router.get("/nonVeg/getNonVegItems", controller.getAllNonVegItems);
-router.get("/nonVeg/getNonVegById/:id", controller.getNonVegById);
 router.post("/nonVeg/saveNonVeg", controller.createNonVeg);
 router.put("/nonVeg/put/:id", controller.updateNonVegItem);
 router.patch("/nonVeg/patch/:id", controller.updateNonVegItemPartial);

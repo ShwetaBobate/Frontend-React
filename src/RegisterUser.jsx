@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +11,13 @@ function RegisterUser() {
   const dispatch = useDispatch();
   const [screen, setScreen] = useState("login");
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   const { loading, error } = useSelector((state) => state.users);
 
   const navigate = useNavigate();
@@ -20,11 +28,12 @@ function RegisterUser() {
       if (res.meta.requestStatus === "fulfilled") {
         Swal.fire({
           title: "Registration Successful!",
-          text: "Welcome to FoodVerse — enjoy your shopping🛍️!",
+          text: "Welcome to FoodVerse — enjoy your shopping!",
           icon: "success",
         });
+
         reset();
-        setScreen("login");
+        navigate("/home");
       } else {
         Swal.fire({
           title: "Registration Failed",
@@ -32,44 +41,23 @@ function RegisterUser() {
           icon: "error",
         });
       }
-
     });
   };
 
   // ---------------- LOGIN ----------------
-  // const handleLogin = (data) => {
-  //   dispatch(loginUser(data)).then((res) => {
-  //     if (res.meta.requestStatus === "fulfilled") {
-  //       Swal.fire({
-  //         title: "Welcome Back!",
-  //         text: "Happy shopping 💅🛍️",
-  //         icon: "success",
-  //       });
-  //       reset();
-  //     } else {
-  //       Swal.fire({
-  //         title: "Login Failed",
-  //         text: error || "Invalid email or password",
-  //         icon: "error",
-  //       });
-  //     }
-  //   });
-  // };
   const handleLogin = (data) => {
     dispatch(loginUser(data)).then((res) => {
-
       if (res.meta.requestStatus === "fulfilled") {
-        const user = res.payload.user;  // <-- username access
+        const user = res.payload.user;
 
         Swal.fire({
-          title: `Welcome ${user.username}! 🩷`,
-          text: "Happy shopping 💅🛍️",
+          title: `Welcome ${user.username}!`,
+          text: "Happy Shopping!",
           icon: "success",
         });
 
         reset();
-        navigate("/checkout"); // <-- redirect
-
+        navigate("/home");
       } else {
         Swal.fire({
           title: "Login Failed",
@@ -80,138 +68,239 @@ function RegisterUser() {
     });
   };
 
-
   return (
-    <div className="min-h-screen flex justify-center items-center p-4 
-                    bg-gradient-to-br from-pink-100 via-peach-200 to-pink-200 text-gray-700
-">
+    <div
+      className="min-h-screen flex justify-center items-center p-2 overflow-y-auto
+  bg-gradient-to-br from-slate-100 via-gray-100 to-blue-100"
+    >
+      {/* CARD */}
+      <div
+        className="w-full max-w-[340px] backdrop-blur-xl bg-white/80
+  border border-gray-200 shadow-xl rounded-xl p-4"
+      >
+        {/* LOGO / BRAND */}
+        <div className="text-center mb-3">
+          <p className="text-black text-2xl font-bold tracking-wide">
+            FOODVERSE
+          </p>
 
-      {/* GLASSMORPHIC CARD */}
-      <div className="w-full max-w-md backdrop-blur-xl bg-white/40 
-                      border border-white/30 shadow-2xl rounded-3xl p-10
-                      animate-[fadeIn_0.6s_ease-in-out]">
+          <p className="text-gray-500 text-xs mt-1">
+            Fresh Food Delivered Fast
+          </p>
+        </div>
 
-        {/* LINKS */}
-        <div className="flex justify-center gap-6 mb-6 text-lg font-semibold">
-          <span
-            onClick={() => setScreen("login")}
-            className={`cursor-pointer ${screen === "login" ? " text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600" : "text-gray-600"
-              }`}
-          >
-            Sign In
-          </span>
+        {/* TABS */}
+        <div className="flex justify-center gap-6 mb-4">          <button
+          onClick={() => setScreen("login")}
+          className={`font-semibold transition-all duration-300 pb-2 ${screen === "login"
+            ? "text-black border-b-2 border-black"
+            : "text-gray-500 hover:text-blue-500"
+            }`}
+        >
+          Sign In
+        </button>
 
-          <span
+          <button
             onClick={() => setScreen("register")}
-            className={`cursor-pointer ${screen === "register" ? " text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600" : "text-gray-600"
+            className={`font-semibold transition-all duration-300 pb-2 ${screen === "register"
+              ? "text-blue-600 border-b-2 border-blue-600"
+              : "text-gray-500 hover:text-blue-500"
               }`}
           >
             Register
-          </span>
+          </button>
         </div>
 
-        {/* SIGN IN */}
+        {/* LOGIN FORM */}
         {screen === "login" && (
           <div className="animate-[slideUp_0.4s_ease]">
-            <h2 className="text-xl font-bold text-center mb-6 text-gray-800">
-              Heyy , Welcome Back !!😍
+            <h2 className="text-lg font-bold text-center text-gray-800">
+              Welcome Back
             </h2>
 
-            <form onSubmit={handleSubmit(handleLogin)} className="space-y-4">
+            <p className="text-center text-gray-500 text-xs mt-1 mb-3">
+              Sign in to continue shopping
+            </p>
 
+            <form
+              onSubmit={handleSubmit(handleLogin)}
+              className="space-y-2"
+            >
               <input
                 type="email"
-                placeholder="Email"
-                {...register("email", { required: "Email is required" })}
-                className="border p-3 w-full rounded-xl bg-white/60 focus:outline-none"
-              />
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email.message}</p>
-              )}
-
-              <input
-                type="password"
-                placeholder="Password"
-                {...register("password", { required: "Password is required" })}
-                className="border p-3 w-full rounded-xl bg-white/60 focus:outline-none"
-              />
-              {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password.message}</p>
-              )}
-
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-pink-500 to-purple-400 text-white py-3 w-full rounded-xl font-semibold 
-                           hover:bg-blue-700 transition"
-              >
-                {loading ? "Signing In..." : "Sign In"}
-              </button>
-            </form>
-          </div>
-        )}
-
-        {/* REGISTER */}
-        {screen === "register" && (
-          <div className="animate-[slideUp_0.4s_ease]">
-            <h2 className="text-xl font-bold text-center mb-6 text-gray-800">
-              Create Account 🩷
-            </h2>
-
-            <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
-
-              <input
-                type="text"
-                placeholder="Username"
-                {...register("username", { required: "Username is required" })}
-                className="border p-3 w-full rounded-xl bg-white/60 focus:outline-none"
-              />
-
-              <input
-                type="email"
-                placeholder="Email"
-                {...register("email", { required: "Email is required" })}
-                className="border p-3 w-full rounded-xl bg-white/60 focus:outline-none"
-              />
-
-              <input
-                type="text"
-                placeholder="Phone (10 digits)"
-                {...register("phone", {
-                  required: "Phone is required",
-                  pattern: { value: /^[0-9]{10}$/, message: "Phone must be 10 digits" },
+                placeholder="Email Address"
+                {...register("email", {
+                  required: "Email is required",
                 })}
-                className="border p-3 w-full rounded-xl bg-white/60 focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg border border-gray-300
+        bg-white text-black placeholder-gray-400
+        focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              {errors.phone && (
-                <p className="text-red-500 text-sm">{errors.phone.message}</p>
-              )}
 
-              <input
-                type="text"
-                placeholder="Address"
-                {...register("address", { required: "Address is required" })}
-                className="border p-3 w-full rounded-xl bg-white/60 focus:outline-none"
-              />
+              {errors.email && (
+                <p className="text-red-500 text-xs">
+                  {errors.email.message}
+                </p>
+              )}
 
               <input
                 type="password"
                 placeholder="Password"
                 {...register("password", {
                   required: "Password is required",
-                  minLength: { value: 6, message: "Minimum 6 characters" },
                 })}
-                className="border p-3 w-full rounded-xl bg-white/60 focus:outline-none"
+                className="w-full px-3 py-2 rounded-lg border border-gray-300
+        bg-white text-black placeholder-gray-400
+        focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+
               {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password.message}</p>
+                <p className="text-red-500 text-xs">
+                  {errors.password.message}
+                </p>
               )}
 
               <button
                 type="submit"
-                className="bg-gradient-to-r from-pink-500 to-purple-400 text-white py-3 w-full rounded-xl font-semibold 
-                           hover:bg-green-700 transition"
+                className="w-full py-2 rounded-lg font-semibold text-white
+        bg-blue-600 hover:bg-blue-700 transition-all duration-300"
               >
-                {loading ? "Registering..." : "Register"}
+                {loading ? "Signing In..." : "Sign In"}
+              </button>
+            </form>
+          </div>
+        )}
+        {/* REGISTER FORM */}
+        {screen === "register" && (
+          <div className="animate-[slideUp_0.4s_ease]">
+            <h2 className="text-xl font-bold text-center text-gray-800">
+              Create Your Account
+            </h2>
+
+            <p className="text-center text-gray-500 text-sm mt-1 mb-4">
+              Join FoodVerse and start shopping today
+            </p>
+
+            <form
+              onSubmit={handleSubmit(handleRegister)}
+              className="space-y-2"
+            >
+              {/* Username */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Username"
+                  {...register("username", {
+                    required: "Username is required",
+                  })}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300
+bg-white text-black placeholder-gray-400
+focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {errors.username && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.username.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Email */}
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email Address"
+                  {...register("email", {
+                    required: "Email is required",
+                  })}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300
+bg-white text-black placeholder-gray-400
+focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {errors.email && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.email.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Phone */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Phone Number"
+                  {...register("phone", {
+                    required: "Phone is required",
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message: "Phone must be 10 digits",
+                    },
+                  })}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300
+bg-white text-black placeholder-gray-400
+focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {errors.phone && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.phone.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Address */}
+              <div>
+                <input
+                  type="text"
+                  placeholder="Address"
+                  {...register("address", {
+                    required: "Address is required",
+                  })}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300
+bg-white text-black placeholder-gray-400
+focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {errors.address && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.address.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Password */}
+              <div>
+                <input
+                  type="password"
+                  placeholder="Password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Minimum 6 characters",
+                    },
+                  })}
+                  className="w-full px-3 py-2 rounded-lg border border-gray-300
+bg-white text-black placeholder-gray-400
+focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+
+                {errors.password && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full py-2.5 rounded-lg font-semibold text-white
+        bg-slate-700 hover:bg-slate-800
+        transition-all duration-300 shadow-md"
+              >
+                {loading ? "Registering..." : "Create Account"}
               </button>
             </form>
           </div>
@@ -222,13 +311,25 @@ function RegisterUser() {
       <style>
         {`
           @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+              opacity: 0;
+              transform: scale(0.96);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1);
+            }
           }
 
           @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            } 
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
         `}
       </style>
